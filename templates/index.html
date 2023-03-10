@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>OpenAI Quickstart</title>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='state_flag.png') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}" />
+    <script>
+      function resizeResultBox() {
+        var resultBox = document.querySelector(".result-box");
+        resultBox.style.height = "auto";
+        resultBox.style.height = resultBox.scrollHeight + "px";
+      }
+      window.addEventListener("load", resizeResultBox);
+      window.addEventListener("resize", resizeResultBox);
+    </script>
+  </head>
+  <body>
+    <img src="{{ url_for('static', filename='state_flag.png') }}" class="icon" />
+    <h3>State Data Request Form</h3>
+    <form action="/" method="post">
+      <label for="data_request">Data Request:</label>
+      <input type="text" name="data_request" id="data_request" placeholder="Enter a request" required />
+      <br>
+      <label for="sample_data">Sample Data:</label>
+      <textarea name="sample_data" id="sample_data" cols="30" rows="10"></textarea>
+      <br>
+      <input type="submit" value="Generate Code" />
+    </form>
+    {% if result %}
+    <div class="result-container">
+      <h4>Generated Code:</h4>
+      <pre class="result-box">{{ result }}</pre>
+    </div>
+    {% endif %}
+  </body>
+</html>
