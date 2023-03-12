@@ -19,10 +19,7 @@
     <h3>State Data Request Form</h3>
     <form action="/" method="post">
       <label for="data_request">Data Request:</label>
-      <input type="text" name="data_request" id="data_request" placeholder="Enter a request" required />
-      <br>
-      <label for="sample_data">Sample Data:</label>
-      <textarea name="sample_data" id="sample_data" cols="30" rows="10"></textarea>
+      <input type="text" name="data_request" id="data_request" placeholder="Enter a request" required value="{{ data_request }}"/>
       <br>
       <input type="submit" value="Generate Code" />
     </form>

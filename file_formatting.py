@@ -54,14 +54,16 @@ KeyError: 'conversation_id'
 During handling of the above exception, another exception occurred:"""
 
 what_i_want = """
-The issue with the current code is that it finishes with mean= rather than mean=bmi. How cann this be fixed?
+I want to take away the Sample Data box and instead create a schemas.py file which already
+has the schemas in it. I want to be able to import the schemas from the schemas.py file into
+the app.py file. I want to be able to use the schemas in the app.py file to generate the prompt.
 """
 
 specific="Please only show the code after this section in the html"
 
 # Set the list of file paths to upload
-filepaths = ['/Users/kevin/Desktop/Github/openai-quickstart-python/app.py',
-             '/Users/kevin/Desktop/Github/openai-quickstart-python/templates/index.html']
+filepaths = ['/Users/kevin/Desktop/Github/state_requests/app.py',
+             '/Users/kevin/Desktop/Github/state_requests/templates/index.html']
 
 # files_str = format_files(error, filepaths, debug_or_improve='debug')
 files_str = format_files(what_i_want, filepaths, debug_or_improve='improve')

@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>OpenAI Quickstart</title>
-    <link rel="shortcut icon" href="{{ url_for('static', filename='dog.png') }}" />
+    <title>Request Form</title>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='state_flag.png') }}" />
     <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}" />
     <script>
       function resizeResultBox() {
@@ -15,14 +15,16 @@
     </script>
   </head>
   <body>
-    <img src="{{ url_for('static', filename='dog.png') }}" class="icon" />
-    <h3>SAS Code Generator</h3>
+    <img src="{{ url_for('static', filename='state_flag.png') }}" class="icon" />
+    <h3>State Data Request Form</h3>
     <form action="/" method="post">
-      <label for="data_request">Enter a request:</label>
-      <input type="text" name="data_request" id="data_request" required />
-      <label for="sample_data">Enter sample data:</label>
-      <textarea name="sample_data" id="sample_data" required></textarea>
-      <input type="submit" value="Generate code" />
+      <label for="data_request">Data Request:</label>
+      <input type="text" name="data_request" id="data_request" placeholder="Enter a request" required value="{{ data_request }}"/>
+      <br>
+      <label for="sample_data">Sample Data:</label>
+      <textarea name="sample_data" id="sample_data" cols="30" rows="10">{{ sample_data }}</textarea>
+      <br>
+      <input type="submit" value="Generate Code" />
     </form>
     {% if result %}
     <div class="result-container">
@@ -32,4 +34,3 @@
     {% endif %}
   </body>
 </html>
-
