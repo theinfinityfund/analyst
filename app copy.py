@@ -1,70 +1,66 @@
 import os
-
 import openai
 from flask import Flask, redirect, render_template, request, url_for
-import schemas
+from schemas import print_final_schemas
 
 app = Flask(__name__)
 openai.api_key = os.getenv("OPENAI_API_KEY")
-
 
 @app.route("/", methods=("GET", "POST"))
 def index():
     if request.method == "POST":
         data_request = request.form["data_request"]
-        sample_data = request.form["sample_data"]
         response = openai.Completion.create(
             model="text-davinci-003",
-            prompt=generate_prompt(data_request, sample_data),
+            prompt=generate_code(data_request),
             temperature=0.6,
             max_tokens=2048
         )
-        print(response)
-        return redirect(url_for("index", result=response.choices[0].text, data_request=data_request, sample_data=sample_data))
+        return redirect(url_for("index", result=response.choices[0].text, data_request=data_request))
 
     result = request.args.get("result")
     data_request = request.args.get("data_request", "")
-    sample_data = request.args.get("sample_data", "")
-    print(result)
-    return render_template("index.html", result=result, data_request=data_request, sample_data=sample_data)
+    return render_template("index.html", result=result, data_request=data_request)
 
+def generate_code(data_request):
+    example = f"""
+            Please recommend code to solve the following problem.
+            Assume you're an external client who is asking a data related question.
+            You will get questions like "What is the total weight of people by zip code?"
+            You need to write code to answer the question based off the "Schemas options" you see below.
+            You can only use the tables and columns in the "Schemas options" to answer the question.
+            Select the closest column names to the question. 
+            Example: "What are the total number of positive cases"
+            Selected Columns: "cases_positive_total"
 
-def generate_prompt(data_request, sample_data):
-    example = """Please recommend code to solve the following problem.
-                 Please include comments and keep the code as simple as possible.
-
-              Schemas:
-              {schemas.Person}
-              {schemas.Location}
-              data sample;
-                input id age gender $ city $ state $ height weight;
-                datalines;
-                1 35 Male New York NY 180 75
-                2 28 Female Los Angeles CA 165 60
-                3 42 Male San Francisco CA 175 80
-                4 31 Female New York NY 160 55
-                5 46 Male San Francisco CA 185 90
-                ;
-                run;
-
-                data zipcodes;
-                input city $ state $ zipcode $;
-                datalines;
-                New York NY 10001
-                Los Angeles CA 90001
-                San Francisco CA 94101
-                ;
-                run;
+            Schemas options:
+            {print_final_schemas("schemas")}
             
-                Problem:
-                How can I merge the sample data with the zipcodes data?
+            Example:
+            What is the total weight of people by zip code?
 
-                Solution:
-                data merged;
-                    merge sample zipcodes;
-                    by city state;
-                run;
-                """
+            Table name: Person
+            Columns:
+            Person: {{'city': 'VARCHAR(255)', 'state': 'VARCHAR(255)', 'height': 'INT', 'weight': 'FLOAT'}}
+
+            Table name: Location
+            Columns:
+            Location: {{'city': 'VARCHAR(255)', 'state': 'VARCHAR(255)', 'zipcode': 'VARCHAR(255)'}}
+
+            Solution:
+            data WeightByZipCode;
+                merge Person (in=a) Location (in=b);
+                by city state;
+                if a and b;
+                length zipcode $255;
+                output;
+            run;
+
+            proc means data=WeightByZipCode sum;
+                var weight;
+                class zipcode;
+            run;
+            """
 
     problem = example + "\n" + f"""Please recommend code to solve the following problem.
     
@@ -73,10 +69,6 @@ def generate_prompt(data_request, sample_data):
 
             Solution:
             """
-
-    sample_data_sections = sample_data.split('---')
-    for i, section in enumerate(sample_data_sections):
-        problem += f"\n\n---- Sample Data {i+1} ----\n{section}"
     
     return problem
 

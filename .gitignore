@@ -1,4 +1,5 @@
 venv/
+venv_analyst/
 
 *.pyc
 __pycache__/

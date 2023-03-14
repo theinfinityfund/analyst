@@ -24,37 +24,40 @@ def index():
 
 def generate_code(data_request):
     example = f"""
-            Please recommend code to solve the following problem.
-            Assume you're an external client who is asking a data related question.
-            You will get questions like "What is the total weight of people by zip code?"
-            You need to write code to answer the question based off the "Schemas options" you see below.
+            Here are table and column information. 
+            Please write me SAS code to generate the following question:
 
-            Schemas options:
+            Schemas Options:
             {print_final_schemas("schemas")}
-            
+
             Example:
-            What is the total weight of people by zip code?
 
-            Table name: Person
+            Schema Options:
+            Table name: summary
             Columns:
-            Person: {{'city': 'VARCHAR(255)', 'state': 'VARCHAR(255)', 'height': 'INT', 'weight': 'FLOAT'}}
-
-            Table name: Location
-            Columns:
-            Location: {{'city': 'VARCHAR(255)', 'state': 'VARCHAR(255)', 'zipcode': 'VARCHAR(255)'}}
+            summary: {{'date': 'DATE', 'admin_level_1': 'VARCHAR(255)', 'state': 'VARCHAR(255)', 
+            'tests_increase': 'INT', 'tests_total': 'INT',
+            'deaths_total': 'INT', 'recovered_total': 'INT', 
+            'hospitilzations_current': 'INT', 'hospitalizations_increase': 'INT', 
+            'hospitalizations_total': 'INT', 'icu_current': 'INT', 'icu_total': 'INT'}}
+            
+            Question:
+            What are the average hospitalizations in the last week?
 
             Solution:
-            data WeightByZipCode;
-                merge Person (in=a) Location (in=b);
-                by city state;
-                if a and b;
-                length zipcode $255;
-                output;
+            /* Set the date range for the last week */
+            %let end_date = today(); /* Assuming today's date is the end date */
+            %let start_date = intnx('day', &end_date, -6); /* Calculate the start date */
+
+            /* Filter the data to include only the last week */
+            data summary_last_week;
+            set summary;
+            where date between "&start_date"d and "&end_date"d;
             run;
 
-            proc means data=WeightByZipCode sum;
-                var weight;
-                class zipcode;
+            /* Calculate the average hospitalizations */
+            proc means data=summary_last_week mean;
+            var hospitilzations_current;
             run;
             """
 
