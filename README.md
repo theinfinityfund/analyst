@@ -13,6 +13,7 @@ Mappings of IAM authentication, BQ data types and SAS data types happen behind t
 ### Run (locally)
 1. Clone the repo
 2. Create a virtual environment
+
    3. Navigate into the project directory
 
       ```bash
