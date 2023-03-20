@@ -10,6 +10,45 @@ Mappings of IAM authentication, BQ data types and SAS data types happen behind t
 ### Example
 ![ExampleRequest](./static/ExampleRequest.png)
 
+### Run (locally)
+1. Clone the repo
+2. Create a virtual environment
+3. Navigate into the project directory
+
+   ```bash
+   $ cd analyst
+   ```
+
+4. Create a new virtual environment
+
+   ```bash
+   $ python -m venv venv_analyst
+   ```
+   $ . venv_analyst/bin/activate
+   ```
+
+5. Install the requirements
+
+   ```bash
+   $ pip install -r requirements.txt
+   ```
+
+6. Make a copy of the example environment variables file
+
+   ```bash
+   $ cp .env.example .env
+   ```
+
+7. Add your [API key](https://beta.openai.com/account/api-keys) to the newly created `.env` file
+AND [IAM credentials](https://cloud.google.com/iam/docs/creating-managing-service-account-keys) to the newly created `.env` file
+
+8. Run the app
+
+   ```bash
+   $ flask run
+   ```
+
+
 ### Further Development
 - [ ] Create dropdown for topic selection (helps non-technical staff to identify correct dataset)
 - [ ] Create dropdown for language selection
