@@ -1,5 +1,6 @@
 venv/
 venv_analyst/
+_deprecated/
 
 *.pyc
 __pycache__/

@@ -1,44 +1,15 @@
-# OpenAI API Quickstart - Python example app
+# Analyst - Ask questions, receive analyst-like code for COVID-19 GCP connected public datasets instanteously.
 
-This is an example pet name generator app used in the OpenAI API [quickstart tutorial](https://beta.openai.com/docs/quickstart). It uses the [Flask](https://flask.palletsprojects.com/en/2.0.x/) web framework. Check out the tutorial or follow the instructions below to get set up.
+### Why?
+Many state governments, including Nevada use closed-source languages like SAS. Often reporters and interested parties will request data from the state for articles, stories, and publications. As it can be imagined, many may come through at any one time, especially during COVID in which the analyst does not have sufficient time to respond to the many questions in the portal. With Analyst we take a stab at automating these very import requests via a [Flask](https://flask.palletsprojects.com/en/2.0.x/) framework so that analysts can be freed up from writing redundant and time-consuming requests.
 
-## Setup
+### How?
+The Flask application is able to connect to GCP via IAM credentials and uploads the schema of the BigQuery dataset for understanding of the data. This schema is passed to the [OpenAI API](https://beta.openai.com/docs/quickstart) GPT Completions endpoint which is able to generate a SAS query based on the question asked. The query is then executed and the results are returned to the user.
+Mappings of IAM authentication, BQ data types and SAS data types happen behind the scenes.
 
-1. If you don’t have Python installed, [install it from here](https://www.python.org/downloads/)
+### Example
+![ExampleRequest](./static/ExampleRequest.png)
 
-2. Clone this repository
-
-3. Navigate into the project directory
-
-   ```bash
-   $ cd openai-quickstart-python
-   ```
-
-4. Create a new virtual environment
-
-   ```bash
-   $ python -m venv venv
-   $ . venv/bin/activate
-   ```
-
-5. Install the requirements
-
-   ```bash
-   $ pip install -r requirements.txt
-   ```
-
-6. Make a copy of the example environment variables file
-
-   ```bash
-   $ cp .env.example .env
-   ```
-
-7. Add your [API key](https://beta.openai.com/account/api-keys) to the newly created `.env` file
-
-8. Run the app
-
-   ```bash
-   $ flask run
-   ```
-
-You should now be able to access the app at [http://localhost:5000](http://localhost:5000)! For the full context behind this example app, check out the [tutorial](https://beta.openai.com/docs/quickstart).
+### Further Development
+- [ ] Create dropdown for topic selection (helps non-technical staff to identify correct dataset)
+- [ ] Create dropdown for language selection

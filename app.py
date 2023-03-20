@@ -24,7 +24,7 @@ def index():
 
 def generate_code(data_request):
     example = f"""
-            Here are table and column information. 
+            Here are table and column information. Print commands are not required.
             Please write me SAS code to generate the following question:
 
             Schemas Options:
